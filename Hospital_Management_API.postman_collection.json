@@ -1,0 +1,1318 @@
+{
+	"info": {
+		"_postman_id": "hospital-management-api",
+		"name": "Hospital Management System API",
+		"description": "Complete API documentation for Hospital Management System with JWT authentication, CRUD operations for medicines, suppliers, stocks, sales, and comprehensive reporting features.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{jwt_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000/api",
+			"type": "string"
+		},
+		{
+			"key": "jwt_token",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"password\": \"password123\",\n    \"password_confirmation\": \"password123\",\n    \"role\": \"admin\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "register"]
+						},
+						"description": "Register a new user in the system. Available roles: admin, cashier"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"password\": \"password123\",\n    \"password_confirmation\": \"password123\",\n    \"role\": \"admin\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/auth/register",
+									"host": ["{{base_url}}"],
+									"path": ["auth", "register"]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"message\": \"User registered successfully\",\n    \"user\": {\n        \"id\": 1,\n        \"name\": \"John Doe\",\n        \"email\": \"john@example.com\",\n        \"role\": \"admin\",\n        \"created_at\": \"2025-12-15T10:00:00.000000Z\",\n        \"updated_at\": \"2025-12-15T10:00:00.000000Z\"\n    },\n    \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    pm.collectionVariables.set('jwt_token', response.token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"john@example.com\",\n    \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "login"]
+						},
+						"description": "Login with email and password to get JWT token"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"john@example.com\",\n    \"password\": \"password123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/auth/login",
+									"host": ["{{base_url}}"],
+									"path": ["auth", "login"]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...\",\n    \"token_type\": \"bearer\",\n    \"expires_in\": 3600,\n    \"user\": {\n        \"id\": 1,\n        \"name\": \"John Doe\",\n        \"email\": \"john@example.com\",\n        \"role\": \"admin\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Current User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/auth/me",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "me"]
+						},
+						"description": "Get current authenticated user information"
+					}
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/auth/refresh",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "refresh"]
+						},
+						"description": "Refresh JWT token"
+					}
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/auth/logout",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "logout"]
+						},
+						"description": "Logout and invalidate JWT token"
+					}
+				}
+			],
+			"description": "Authentication endpoints for user registration, login, token management"
+		},
+		{
+			"name": "Medicines",
+			"item": [
+				{
+					"name": "Get All Medicines",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/medicines?search=paracetamol&category=tablet&per_page=10",
+							"host": ["{{base_url}}"],
+							"path": ["medicines"],
+							"query": [
+								{
+									"key": "search",
+									"value": "paracetamol",
+									"description": "Search by name, generic name, or barcode"
+								},
+								{
+									"key": "category",
+									"value": "tablet",
+									"description": "Filter by category"
+								},
+								{
+									"key": "per_page",
+									"value": "10",
+									"description": "Number of items per page"
+								}
+							]
+						},
+						"description": "Get paginated list of medicines with optional search and filtering"
+					}
+				},
+				{
+					"name": "Create Medicine",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Paracetamol 500mg\",\n    \"generic_name\": \"Acetaminophen\",\n    \"category\": \"Tablet\",\n    \"description\": \"Pain reliever and fever reducer\",\n    \"unit_price\": 2.50,\n    \"barcode\": \"1234567890123\",\n    \"reorder_level\": 50,\n    \"supplier_id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/medicines",
+							"host": ["{{base_url}}"],
+							"path": ["medicines"]
+						},
+						"description": "Create a new medicine record"
+					}
+				},
+				{
+					"name": "Get Medicine by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/medicines/1",
+							"host": ["{{base_url}}"],
+							"path": ["medicines", "1"]
+						},
+						"description": "Get specific medicine with supplier and stock information"
+					}
+				},
+				{
+					"name": "Update Medicine",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Paracetamol 500mg Updated\",\n    \"unit_price\": 3.00,\n    \"reorder_level\": 75\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/medicines/1",
+							"host": ["{{base_url}}"],
+							"path": ["medicines", "1"]
+						},
+						"description": "Update existing medicine record"
+					}
+				},
+				{
+					"name": "Delete Medicine",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/medicines/1",
+							"host": ["{{base_url}}"],
+							"path": ["medicines", "1"]
+						},
+						"description": "Delete medicine record"
+					}
+				},
+				{
+					"name": "Find Medicine by Barcode",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/medicines/barcode/1234567890123",
+							"host": ["{{base_url}}"],
+							"path": ["medicines", "barcode", "1234567890123"]
+						},
+						"description": "Find medicine by barcode for POS scanning"
+					}
+				}
+			],
+			"description": "Medicine management endpoints for CRUD operations and barcode scanning"
+		},
+		{
+			"name": "Suppliers",
+			"item": [
+				{
+					"name": "Get All Suppliers",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/suppliers",
+							"host": ["{{base_url}}"],
+							"path": ["suppliers"]
+						},
+						"description": "Get list of all suppliers"
+					}
+				},
+				{
+					"name": "Create Supplier",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"ABC Pharmaceuticals\",\n    \"contact_person\": \"John Smith\",\n    \"phone\": \"+1234567890\",\n    \"email\": \"contact@abcpharma.com\",\n    \"address\": \"123 Medical Street, Health City\",\n    \"license_number\": \"LIC123456\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/suppliers",
+							"host": ["{{base_url}}"],
+							"path": ["suppliers"]
+						},
+						"description": "Create a new supplier record"
+					}
+				},
+				{
+					"name": "Get Supplier by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/suppliers/1",
+							"host": ["{{base_url}}"],
+							"path": ["suppliers", "1"]
+						},
+						"description": "Get specific supplier information"
+					}
+				},
+				{
+					"name": "Update Supplier",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"ABC Pharmaceuticals Ltd\",\n    \"phone\": \"+1234567891\",\n    \"email\": \"info@abcpharma.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/suppliers/1",
+							"host": ["{{base_url}}"],
+							"path": ["suppliers", "1"]
+						},
+						"description": "Update existing supplier record"
+					}
+				},
+				{
+					"name": "Delete Supplier",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/suppliers/1",
+							"host": ["{{base_url}}"],
+							"path": ["suppliers", "1"]
+						},
+						"description": "Delete supplier record"
+					}
+				}
+			],
+			"description": "Supplier management endpoints for maintaining supplier information"
+		},
+		{
+			"name": "Stocks",
+			"item": [
+				{
+					"name": "Get All Stocks",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/stocks?per_page=15",
+							"host": ["{{base_url}}"],
+							"path": ["stocks"],
+							"query": [
+								{
+									"key": "per_page",
+									"value": "15",
+									"description": "Number of items per page"
+								}
+							]
+						},
+						"description": "Get paginated list of all stock items with medicine and supplier details"
+					}
+				},
+				{
+					"name": "Create Stock Entry",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"medicine_id\": 1,\n    \"supplier_id\": 1,\n    \"batch_number\": \"BATCH001\",\n    \"quantity\": 100,\n    \"purchase_price\": 2.00,\n    \"selling_price\": 2.50,\n    \"expiry_date\": \"2025-12-31\",\n    \"manufacture_date\": \"2024-01-15\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/stocks",
+							"host": ["{{base_url}}"],
+							"path": ["stocks"]
+						},
+						"description": "Add new stock entry with batch tracking"
+					}
+				},
+				{
+					"name": "Get Stock by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/stocks/1",
+							"host": ["{{base_url}}"],
+							"path": ["stocks", "1"]
+						},
+						"description": "Get specific stock item details"
+					}
+				},
+				{
+					"name": "Update Stock",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"quantity\": 150,\n    \"selling_price\": 2.75\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/stocks/1",
+							"host": ["{{base_url}}"],
+							"path": ["stocks", "1"]
+						},
+						"description": "Update existing stock record"
+					}
+				},
+				{
+					"name": "Delete Stock",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/stocks/1",
+							"host": ["{{base_url}}"],
+							"path": ["stocks", "1"]
+						},
+						"description": "Delete stock record"
+					}
+				},
+				{
+					"name": "Get Expiring Stock Alerts",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/stocks/alerts/expiring?days=30",
+							"host": ["{{base_url}}"],
+							"path": ["stocks", "alerts", "expiring"],
+							"query": [
+								{
+									"key": "days",
+									"value": "30",
+									"description": "Number of days to check for expiring items"
+								}
+							]
+						},
+						"description": "Get stock items expiring within specified days"
+					}
+				},
+				{
+					"name": "Get Expired Stock",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/stocks/alerts/expired",
+							"host": ["{{base_url}}"],
+							"path": ["stocks", "alerts", "expired"]
+						},
+						"description": "Get all expired stock items"
+					}
+				},
+				{
+					"name": "Get Low Stock Alerts",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/stocks/alerts/low",
+							"host": ["{{base_url}}"],
+							"path": ["stocks", "alerts", "low"]
+						},
+						"description": "Get medicines with stock below reorder level"
+					}
+				},
+				{
+					"name": "Get Stock Statistics",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/stocks/statistics",
+							"host": ["{{base_url}}"],
+							"path": ["stocks", "statistics"]
+						},
+						"description": "Get overall stock statistics and summary"
+					}
+				},
+				{
+					"name": "Adjust Stock Quantity",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"adjustment_type\": \"increase\",\n    \"quantity\": 25,\n    \"reason\": \"Stock correction after physical count\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/stocks/1/adjust",
+							"host": ["{{base_url}}"],
+							"path": ["stocks", "1", "adjust"]
+						},
+						"description": "Adjust stock quantity (increase/decrease) with reason"
+					}
+				},
+				{
+					"name": "Transfer Stock",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"from_stock_id\": 1,\n    \"to_stock_id\": 2,\n    \"quantity\": 10,\n    \"reason\": \"Transfer to different batch\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/stocks/transfer",
+							"host": ["{{base_url}}"],
+							"path": ["stocks", "transfer"]
+						},
+						"description": "Transfer stock between different batches"
+					}
+				}
+			],
+			"description": "Stock management endpoints for inventory tracking, batch management, and alerts"
+		},
+		{
+			"name": "Sales",
+			"item": [
+				{
+					"name": "Get All Sales",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/sales?per_page=15&from_date=2025-01-01&to_date=2025-12-31",
+							"host": ["{{base_url}}"],
+							"path": ["sales"],
+							"query": [
+								{
+									"key": "per_page",
+									"value": "15",
+									"description": "Number of items per page"
+								},
+								{
+									"key": "from_date",
+									"value": "2025-01-01",
+									"description": "Filter sales from date"
+								},
+								{
+									"key": "to_date",
+									"value": "2025-12-31",
+									"description": "Filter sales to date"
+								}
+							]
+						},
+						"description": "Get paginated list of all sales with optional date filtering"
+					}
+				},
+				{
+					"name": "Create Sale (Counter Sale)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"customer_name\": \"John Doe\",\n    \"customer_phone\": \"+1234567890\",\n    \"payment_method\": \"cash\",\n    \"discount_percentage\": 5,\n    \"tax_percentage\": 10,\n    \"items\": [\n        {\n            \"medicine_id\": 1,\n            \"stock_id\": 1,\n            \"quantity\": 2,\n            \"unit_price\": 2.50\n        },\n        {\n            \"medicine_id\": 2,\n            \"stock_id\": 2,\n            \"quantity\": 1,\n            \"unit_price\": 5.00\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/sales",
+							"host": ["{{base_url}}"],
+							"path": ["sales"]
+						},
+						"description": "Create new sale with multiple items, discounts, and tax calculation"
+					}
+				},
+				{
+					"name": "Get Sale by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/sales/1",
+							"host": ["{{base_url}}"],
+							"path": ["sales", "1"]
+						},
+						"description": "Get specific sale details with items and customer information"
+					}
+				},
+				{
+					"name": "Generate Invoice PDF",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/pdf"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/sales/1/invoice",
+							"host": ["{{base_url}}"],
+							"path": ["sales", "1", "invoice"]
+						},
+						"description": "Generate and download PDF invoice for a specific sale"
+					}
+				}
+			],
+			"description": "Sales management endpoints for POS operations, invoicing, and transaction tracking"
+		},
+		{
+			"name": "Reports",
+			"item": [
+				{
+					"name": "Daily Sales Report",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/reports/daily-sales?date=2025-12-15",
+							"host": ["{{base_url}}"],
+							"path": ["reports", "daily-sales"],
+							"query": [
+								{
+									"key": "date",
+									"value": "2025-12-15",
+									"description": "Date for daily sales report (defaults to today)"
+								}
+							]
+						},
+						"description": "Get daily sales summary with total revenue, transactions, and detailed sales list"
+					}
+				},
+				{
+					"name": "Top Medicines Report",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/reports/top-medicines?limit=10&from_date=2025-01-01&to_date=2025-12-31",
+							"host": ["{{base_url}}"],
+							"path": ["reports", "top-medicines"],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "Number of top medicines to return"
+								},
+								{
+									"key": "from_date",
+									"value": "2025-01-01",
+									"description": "Start date for analysis"
+								},
+								{
+									"key": "to_date",
+									"value": "2025-12-31",
+									"description": "End date for analysis"
+								}
+							]
+						},
+						"description": "Get top selling medicines by quantity and revenue within date range"
+					}
+				},
+				{
+					"name": "Stock Value Report",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/reports/stock-value",
+							"host": ["{{base_url}}"],
+							"path": ["reports", "stock-value"]
+						},
+						"description": "Get current stock valuation with purchase and selling values"
+					}
+				},
+				{
+					"name": "Sales Summary PDF",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/pdf"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/reports/sales-summary?from_date=2025-01-01&to_date=2025-12-31",
+							"host": ["{{base_url}}"],
+							"path": ["reports", "sales-summary"],
+							"query": [
+								{
+									"key": "from_date",
+									"value": "2025-01-01",
+									"description": "Start date for report"
+								},
+								{
+									"key": "to_date",
+									"value": "2025-12-31",
+									"description": "End date for report"
+								}
+							]
+						},
+						"description": "Generate and download PDF sales summary report for date range"
+					}
+				},
+				{
+					"name": "Inventory Report",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/reports/inventory",
+							"host": ["{{base_url}}"],
+							"path": ["reports", "inventory"]
+						},
+						"description": "Get comprehensive inventory report with stock levels, values, and status"
+					}
+				},
+				{
+					"name": "Expiry Report",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/reports/expiry",
+							"host": ["{{base_url}}"],
+							"path": ["reports", "expiry"]
+						},
+						"description": "Get expiry report showing expired and expiring medicines"
+					}
+				}
+			],
+			"description": "Comprehensive reporting endpoints for business analytics, inventory management, and compliance"
+		}
+	]
+}

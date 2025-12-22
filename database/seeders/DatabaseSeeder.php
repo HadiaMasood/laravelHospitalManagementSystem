@@ -12,11 +12,11 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // Create admin user (password will be hashed by Laravel automatically)
+        // Create admin user
         User::create([
             'name' => 'Admin User',
             'email' => 'admin@medicalstore.com',
-            'password' => 'password123', // Plain password
+            'password' => \Illuminate\Support\Facades\Hash::make('password123'),
             'role' => 'admin',
         ]);
 
@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name' => 'Cashier',
             'email' => 'cashier@medicalstore.com',
-            'password' => 'password123', // Plain password
+            'password' => \Illuminate\Support\Facades\Hash::make('password123'),
             'role' => 'cashier',
         ]);
 

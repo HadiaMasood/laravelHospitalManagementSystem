@@ -75,7 +75,7 @@
                     <div class="mt-4 flex gap-2">
                         <a href="{{ route('admin.stocks.create', ['medicine_id' => $medicine->id]) }}" 
                            class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 text-sm font-semibold">
-                            📦 Add New Stock
+                             Add New Stock
                         </a>
                         <a href="{{ route('admin.medicines.show', $medicine) }}" 
                            class="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 text-sm font-semibold">

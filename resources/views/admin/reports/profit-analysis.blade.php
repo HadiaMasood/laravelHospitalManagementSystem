@@ -7,7 +7,7 @@
 
     <div class="flex justify-between items-center mb-6">
         <div>
-            <h1 class="text-3xl font-bold text-gray-800">💵 Profit Analysis</h1>
+            <h1 class="text-3xl font-bold text-gray-800"> Profit Analysis</h1>
             <p class="text-gray-600 mt-2">Profit margins and cost analysis</p>
         </div>
         <a href="{{ route('admin.reports.index') }}" 

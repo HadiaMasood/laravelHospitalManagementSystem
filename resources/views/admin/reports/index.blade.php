@@ -6,7 +6,7 @@
 <div class="container mx-auto px-4 py-8">
 
     <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-800">📊 Reports</h1>
+        <h1 class="text-3xl font-bold text-gray-800"> Reports</h1>
         <p class="text-gray-600 mt-2">Daily sales, top medicines, stock reports</p>
     </div>
 
@@ -16,7 +16,7 @@
         <!-- Daily Sales Report -->
         <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg shadow-lg p-6 text-white">
             <div class="flex items-center justify-between mb-4">
-                <h3 class="text-xl font-bold">📅 Daily Sales</h3>
+                <h3 class="text-xl font-bold"> Daily Sales</h3>
                 <i class="fas fa-chart-line text-3xl opacity-50"></i>
             </div>
             <p class="text-blue-100 mb-4">View daily sales performance and revenue</p>
@@ -29,7 +29,7 @@
         <!-- Top Medicines Report -->
         <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-lg shadow-lg p-6 text-white">
             <div class="flex items-center justify-between mb-4">
-                <h3 class="text-xl font-bold">🏆 Top Medicines</h3>
+                <h3 class="text-xl font-bold"> Top Medicines</h3>
                 <i class="fas fa-pills text-3xl opacity-50"></i>
             </div>
             <p class="text-green-100 mb-4">Best selling medicines and trends</p>
@@ -42,7 +42,7 @@
         <!-- Stock Value Report -->
         <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg shadow-lg p-6 text-white">
             <div class="flex items-center justify-between mb-4">
-                <h3 class="text-xl font-bold">💰 Stock Value</h3>
+                <h3 class="text-xl font-bold"> Stock Value</h3>
                 <i class="fas fa-box text-3xl opacity-50"></i>
             </div>
             <p class="text-purple-100 mb-4">Total inventory value and analysis</p>
@@ -55,7 +55,7 @@
         <!-- Monthly Sales Report -->
         <div class="bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg shadow-lg p-6 text-white">
             <div class="flex items-center justify-between mb-4">
-                <h3 class="text-xl font-bold">📈 Monthly Sales</h3>
+                <h3 class="text-xl font-bold"> Monthly Sales</h3>
                 <i class="fas fa-calendar-alt text-3xl opacity-50"></i>
             </div>
             <p class="text-orange-100 mb-4">Monthly revenue and growth analysis</p>
@@ -68,7 +68,7 @@
         <!-- Profit Analysis -->
         <div class="bg-gradient-to-br from-red-500 to-red-600 rounded-lg shadow-lg p-6 text-white">
             <div class="flex items-center justify-between mb-4">
-                <h3 class="text-xl font-bold">💵 Profit Analysis</h3>
+                <h3 class="text-xl font-bold"> Profit Analysis</h3>
                 <i class="fas fa-dollar-sign text-3xl opacity-50"></i>
             </div>
             <p class="text-red-100 mb-4">Profit margins and cost analysis</p>
@@ -81,7 +81,7 @@
         <!-- Expiry Alert Report -->
         <div class="bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-lg shadow-lg p-6 text-white">
             <div class="flex items-center justify-between mb-4">
-                <h3 class="text-xl font-bold">⚠️ Expiry Alerts</h3>
+                <h3 class="text-xl font-bold"> Expiry Alerts</h3>
                 <i class="fas fa-exclamation-triangle text-3xl opacity-50"></i>
             </div>
             <p class="text-yellow-100 mb-4">Medicines expiring soon</p>
@@ -95,7 +95,7 @@
 
     <!-- Quick Stats Overview -->
     <div class="bg-white rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-bold text-gray-800 mb-6">📊 Quick Overview</h2>
+        <h2 class="text-2xl font-bold text-gray-800 mb-6"> Quick Overview</h2>
         
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
             <!-- Today's Sales -->

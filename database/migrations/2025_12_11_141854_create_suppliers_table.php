@@ -14,6 +14,7 @@ return new class extends Migration
             $table->string('phone', 20);
             $table->string('email')->nullable();
             $table->text('address')->nullable();
+            $table->string('license_number')->nullable();
             $table->timestamps();
         });
     }

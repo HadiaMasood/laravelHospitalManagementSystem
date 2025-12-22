@@ -12,23 +12,23 @@ class EmailAlertSettingSeeder extends Seeder
         $settings = [
             [
                 'alert_type' => 'expiry',
-                'is_enabled' => true,
+                'is_enabled' => false,
                 'days_before' => 90,
-                'recipients' => 'admin@pharmacy.com',
+                'recipients' => 'admin@hospital.com',
                 'send_time' => '09:00:00',
             ],
             [
                 'alert_type' => 'low_stock',
-                'is_enabled' => true,
+                'is_enabled' => false,
                 'days_before' => 0,
-                'recipients' => 'admin@pharmacy.com',
+                'recipients' => 'admin@hospital.com',
                 'send_time' => '09:00:00',
             ],
             [
                 'alert_type' => 'expired',
-                'is_enabled' => true,
+                'is_enabled' => false,
                 'days_before' => 0,
-                'recipients' => 'admin@pharmacy.com',
+                'recipients' => 'admin@hospital.com',
                 'send_time' => '09:00:00',
             ],
         ];

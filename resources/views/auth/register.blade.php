@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Hospital Management</title>
+    <title>Register - Hospital Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gradient-to-br from-blue-400 via-pink-300 to-pink-400 min-h-screen flex items-center justify-center">
@@ -15,24 +15,47 @@
                 </svg>
             </div>
             <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-pink-600 bg-clip-text text-transparent">Hospital Management</h1>
-            <p class="text-gray-600 mt-2">Sign in to your account</p>
+            <p class="text-gray-600 mt-2">Create your account</p>
         </div>
 
         @if($errors->any())
         <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">
-            {{ $errors->first() }}
+            <ul class="list-disc list-inside">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
         @endif
 
-        <form action="{{ route('login.post') }}" method="POST" class="space-y-6">
+        <form action="{{ route('register.post') }}" method="POST" class="space-y-4">
             @csrf
             
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                <input type="text" name="name" required
+                       value="{{ old('name') }}"
+                       class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                       placeholder="John Doe">
+            </div>
+
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
                 <input type="email" name="email" required
                        value="{{ old('email') }}"
                        class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                       placeholder="admin@medicalstore.com">
+                       placeholder="john@example.com">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Role</label>
+                <select name="role" required
+                        class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                    <option value="">Select a role</option>
+                    <option value="admin">Admin</option>
+                    <option value="cashier">Cashier</option>
+                    <option value="staff">Staff</option>
+                </select>
             </div>
 
             <div>
@@ -40,22 +63,25 @@
                 <input type="password" name="password" required
                        class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                        placeholder="••••••••">
+                <p class="text-xs text-gray-500 mt-1">Minimum 8 characters</p>
             </div>
 
-            <div class="flex items-center">
-                <input type="checkbox" name="remember" id="remember" class="w-4 h-4 text-blue-600 rounded">
-                <label for="remember" class="ml-2 text-sm text-gray-700">Remember me</label>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+                <input type="password" name="password_confirmation" required
+                       class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                       placeholder="••••••••">
             </div>
 
             <button type="submit" 
                     class="w-full bg-gradient-to-r from-blue-500 to-pink-500 text-white py-3 rounded-lg hover:from-blue-600 hover:to-pink-600 font-medium transition-all shadow-lg hover:shadow-xl">
-                Sign In
+                Create Account
             </button>
-        </form>
 
-        <p class="text-center text-gray-600 text-sm mt-6">
-            Don't have an account? <a href="{{ route('register') }}" class="text-blue-600 hover:text-blue-700 font-medium">Create one</a>
-        </p>
+            <p class="text-center text-gray-600 text-sm">
+                Already have an account? <a href="{{ route('login') }}" class="text-blue-600 hover:text-blue-700 font-medium">Sign In</a>
+            </p>
+        </form>
     </div>
 </body>
 </html>

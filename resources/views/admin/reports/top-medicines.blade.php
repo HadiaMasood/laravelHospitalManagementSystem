@@ -7,7 +7,7 @@
 
     <div class="flex justify-between items-center mb-6">
         <div>
-            <h1 class="text-3xl font-bold text-gray-800">🏆 Top Selling Medicines</h1>
+            <h1 class="text-3xl font-bold text-gray-800"> Top Selling Medicines</h1>
             <p class="text-gray-600 mt-2">Best performers from {{ \Carbon\Carbon::parse($from)->format('M d, Y') }} to {{ \Carbon\Carbon::parse($to)->format('M d, Y') }}</p>
         </div>
         <div class="flex gap-2">

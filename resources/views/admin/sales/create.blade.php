@@ -66,7 +66,7 @@
 
           <!-- Method 4: Browse -->
           <div>
-            <label class="block mb-2 font-semibold text-gray-700">Browse All Products</label>
+            <label class="block mb-2 font-semibold text-gray-700"> Browse All Products</label>
             <select id="medicineSelect" class="w-full border rounded px-3 py-2" onchange="selectFromDropdown()">
               <option value="">-- Select Medicine --</option>
               @foreach($medicines as $medicine)
@@ -119,26 +119,26 @@
 
         <div id="hiddenCartFields"></div>
 
-       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-  <div>
-    <label class="block mb-2 text-sm font-semibold text-gray-700"> Discount (₨)</label>
-    <input id="discountInput" name="discount" type="number" min="0" step="0.01" value="0" class="px-4 py-2 border rounded w-full" oninput="updateTotals()" placeholder="0.00" />
-  </div>
-  
-  <div>
-    <label class="block mb-2 text-sm font-semibold text-gray-700"> Tax (₨)</label>
-    <input id="taxInput" name="tax" type="number" min="0" step="0.01" value="0" class="px-4 py-2 border rounded w-full" oninput="updateTotals()" placeholder="0.00" />
-  </div>
-  
-  <div>
-    <label class="block mb-2 text-sm font-semibold text-gray-700"> Payment Method</label>
-    <select name="payment_method" required class="px-4 py-2 border rounded w-full">
-      <option value="cash"> Cash</option>
-      <option value="card"> Card</option>
-      <option value="upi"> UPI</option>
-    </select>
-  </div>
-</div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div>
+            <label class="block mb-2 text-sm font-semibold text-gray-700"> Discount (₨)</label>
+            <input id="discountInput" name="discount" type="number" min="0" step="0.01" value="0" class="px-4 py-2 border rounded w-full" oninput="updateTotals()" placeholder="0.00" />
+          </div>
+          
+          <div>
+            <label class="block mb-2 text-sm font-semibold text-gray-700"> Tax (₨)</label>
+            <input id="taxInput" name="tax" type="number" min="0" step="0.01" value="0" class="px-4 py-2 border rounded w-full" oninput="updateTotals()" placeholder="0.00" />
+          </div>
+          
+          <div>
+            <label class="block mb-2 text-sm font-semibold text-gray-700"> Payment Method</label>
+            <select name="payment_method" required class="px-4 py-2 border rounded w-full">
+              <option value="cash"> Cash</option>
+              <option value="card">Card</option>
+              <option value="upi"> UPI</option>
+            </select>
+          </div>
+        </div>
 
         <div class="flex gap-4">
           <button type="submit" class="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700"> Complete Sale</button>
@@ -180,7 +180,7 @@
   <div class="bg-white rounded-xl shadow-2xl w-full max-w-md">
     <div class="bg-gradient-to-r from-purple-600 to-indigo-600 px-6 py-4 rounded-t-xl flex justify-between items-center text-white">
       <div>
-        <h3 class="font-semibold text-lg">📷 Barcode Scanner</h3>
+        <h3 class="font-semibold text-lg"> Barcode Scanner</h3>
         <div class="text-xs opacity-90">Point camera at barcode</div>
       </div>
       <button onclick="closeBarcodeScanner()" class="text-white hover:text-gray-200 text-2xl leading-none">✕</button>
@@ -283,48 +283,49 @@ document.addEventListener('DOMContentLoaded', function(){
   });
 });
 
-// GS1-aware parser to extract GTIN/batch/expiry and candidate codes
-function parseGS1(payload){
-  const out = { gtin:null, batch:null, expiry:null, candidates:[] };
-  if(!payload) return out;
+// Enhanced barcode parser for real-world barcodes
+function parseBarcode(payload){
+  const out = { gtin: null, batch: null, expiry: null, candidates: [] };
+  if (!payload) return out;
 
-  // (01)GTIN / (17)expiry / (10)batch
-  const p01 = payload.match(/\(01\)(\d{13,14})/);
-  const p17 = payload.match(/\(17\)(\d{6})/);
-  const p10 = payload.match(/\(10\)([^()]+)/);
-  if(p01) out.gtin = normalizeDigits(p01[1]);
-  if(p17) out.expiry = p17[1];
-  if(p10) out.batch = p10[1].trim();
-
-  // Try AI without parentheses
-  if(!out.gtin){
-    const ai01 = payload.match(/01(\d{13,14})/);
-    if(ai01) out.gtin = normalizeDigits(ai01[1]);
+  const clean = payload.trim();
+  
+  // GS1 DataMatrix/DataBar patterns
+  const gs1Match = clean.match(/\(01\)(\d{13,14})(?:\(17\)(\d{6}))?(?:\(10\)([^()]+))?/);
+  if (gs1Match) {
+    out.gtin = gs1Match[1];
+    out.expiry = gs1Match[2];
+    out.batch = gs1Match[3];
   }
 
-  // Fallback: any 8/12/13/14 digit sequence
-  if(!out.gtin){
-    const seq = payload.match(/(?:\D|^)(\d{8}|\d{12}|\d{13}|\d{14})(?:\D|$)/);
-    if(seq) out.gtin = normalizeDigits(seq[1]);
-  }
-
-  if(out.gtin){
-    out.candidates.push(out.gtin);
-    out.candidates.push(out.gtin.replace(/^0+/, ''));
-    if(out.gtin.length>=13) out.candidates.push(out.gtin.slice(-13));
-    if(out.gtin.length>=12) out.candidates.push(out.gtin.slice(-12));
-    if(out.gtin.length>=8) out.candidates.push(out.gtin.slice(-8));
-  }
-
-  // Any digit groups
-  const allDigits = payload.match(/\d+/g) || [];
-  allDigits.forEach(d=>{
-    const nd = normalizeDigits(d);
-    if(nd){ 
-      out.candidates.push(nd); 
-      out.candidates.push(nd.replace(/^0+/, '')); 
+  // GS1 without parentheses
+  if (!out.gtin) {
+    const gs1NoParens = clean.match(/^01(\d{13,14})(?:17(\d{6}))?(?:10(.+))?/);
+    if (gs1NoParens) {
+      out.gtin = gs1NoParens[1];
+      out.expiry = gs1NoParens[2];
+      out.batch = gs1NoParens[3];
     }
-  });
+  }
+
+  // Standard EAN-13/UPC-A
+  if (!out.gtin) {
+    const eanMatch = clean.match(/^(\d{12,14})$/);
+    if (eanMatch) {
+      out.gtin = eanMatch[1];
+    }
+  }
+
+  // Extract digit sequences
+  if (!out.gtin) {
+    const digitSequences = clean.match(/\d{8,14}/g) || [];
+    digitSequences.forEach(seq => {
+      if(seq){ 
+        out.candidates.push(seq); 
+        out.candidates.push(seq.replace(/^0+/, '')); 
+      }
+    });
+  }
 
   out.candidates = Array.from(new Set(out.candidates)).filter(Boolean);
   return out;
@@ -364,12 +365,11 @@ function onScanError(err){ /* ignore frequent minor errors */ }
 
 function onScanSuccess(decodedText){
   try{
-    navigator.vibrate?.(100); // Haptic feedback
-    const parsed = parseGS1(decodedText);
+    if(navigator.vibrate) navigator.vibrate(100);
+    const parsed = parseBarcode(decodedText);
     console.log('Decoded:', decodedText, parsed);
     const candidates = parsed.candidates.length ? parsed.candidates : [ normalizeDigits(decodedText) ];
     
-    // Stop scanner
     if(html5QrCodeScanner){
       html5QrCodeScanner.stop()
         .then(()=>{ html5QrCodeScanner.clear(); html5QrCodeScanner = null; })
@@ -468,7 +468,7 @@ function searchByBarcodeCandidates(candidates){
 function onManualSearch(){
   const raw = document.getElementById('barcodeInput').value.trim();
   if(!raw){ showNotification('Please enter barcode', 'warning'); return; }
-  const parsed = parseGS1(raw);
+  const parsed = parseBarcode(raw);
   const candidates = parsed.candidates.length ? parsed.candidates : [ normalizeDigits(raw) ];
   searchByBarcodeCandidates(candidates);
 }

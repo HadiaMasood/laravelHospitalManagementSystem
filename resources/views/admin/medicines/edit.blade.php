@@ -65,6 +65,15 @@
                     </div>
 
                     <div>
+                        <label class="block mb-2 font-medium">Barcode *</label>
+                        <input type="text" name="barcode" value="{{ old('barcode', $medicine->barcode) }}" required 
+                               class="w-full border rounded px-4 py-2 focus:ring-2 focus:ring-indigo-500">
+                        @error('barcode')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div>
                         <label class="block mb-2 font-medium">Supplier *</label>
                         <select name="supplier_id" required 
                                 class="w-full border rounded px-4 py-2 focus:ring-2 focus:ring-indigo-500">
@@ -101,7 +110,7 @@
                 <div class="flex gap-4 mt-6">
                     <button type="submit" 
                             class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 font-semibold">
-                        ✅ Update Medicine
+                         Update Medicine
                     </button>
                     <a href="{{ route('admin.medicines.index') }}" 
                        class="bg-gray-300 text-gray-700 px-6 py-2 rounded hover:bg-gray-400 font-semibold">

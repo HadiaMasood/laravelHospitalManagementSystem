@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\AdminAuthController;
+use App\Http\Controllers\Auth\CashierAuthController;
+use App\Http\Controllers\Auth\HomeController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\StockWebController;
 use App\Http\Controllers\Admin\MedicineWebController;
@@ -10,21 +14,51 @@ use App\Http\Controllers\Admin\SaleWebController;
 use App\Http\Controllers\Admin\ReportWebController;
 use App\Http\Controllers\Admin\EmailAlertController; 
 use App\Http\Controllers\SalesController;
-use App\Http\Controllers\MedicineController;
 
 /*
 |--------------------------------------------------------------------------
-| Authentication Routes
+| Home Route
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/', [HomeController::class, 'index'])->name('auth.home');
+
+/*
+|--------------------------------------------------------------------------
+| Admin Authentication Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
+Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login.post');
+Route::get('/admin/register', [AdminAuthController::class, 'showRegisterForm'])->name('admin.register');
+Route::post('/admin/register', [AdminAuthController::class, 'register'])->name('admin.register.post');
+
+/*
+|--------------------------------------------------------------------------
+| Cashier Authentication Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/cashier/login', [CashierAuthController::class, 'showLoginForm'])->name('cashier.login');
+Route::post('/cashier/login', [CashierAuthController::class, 'login'])->name('cashier.login.post');
+Route::get('/cashier/register', [CashierAuthController::class, 'showRegisterForm'])->name('cashier.register');
+Route::post('/cashier/register', [CashierAuthController::class, 'register'])->name('cashier.register.post');
+
+/*
+|--------------------------------------------------------------------------
+| Old Authentication Routes (Kept for backward compatibility)
 |--------------------------------------------------------------------------
 */
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+Route::post('/cashier/logout', [CashierAuthController::class, 'logout'])->name('cashier.logout');
 
-Route::get('/', function () {
-    return redirect()->route('login');
-});
+Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register');
+Route::post('/register', [RegisterController::class, 'register'])->name('register.post');
 
 /*
 |--------------------------------------------------------------------------
@@ -80,11 +114,6 @@ Route::middleware(['auth'])->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| API Routes (Barcode Scan)
+| API Routes (Barcode Scan) - Removed, use api.php instead
 |--------------------------------------------------------------------------
 */
-
-Route::middleware(['auth'])->group(function () {
-    Route::get('/api/medicines', [MedicineController::class, 'index']);
-    Route::get('/api/medicines/barcode/{barcode}', [MedicineController::class, 'findByBarcode']);
-});

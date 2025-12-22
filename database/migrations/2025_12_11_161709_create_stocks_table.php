@@ -15,6 +15,7 @@ return new class extends Migration
             $table->decimal('purchase_price', 10, 2);
             $table->decimal('selling_price', 10, 2);
             $table->date('expiry_date');
+            $table->date('manufacture_date')->nullable();
             $table->foreignId('supplier_id')->constrained()->onDelete('cascade');
             $table->date('purchase_date');
             

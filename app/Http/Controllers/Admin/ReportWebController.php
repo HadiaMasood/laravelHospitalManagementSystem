@@ -175,8 +175,10 @@ class ReportWebController extends Controller
         $sales = Sale::with('items.medicine')->whereDate('created_at', $date)->get();
         
         $summary = [
-            'total_sales' => $sales->sum('total'),
-            'total_transactions' => $sales->count(),
+            'total_sales' => $sales->count(),
+            'total_revenue' => $sales->sum('total') ?? 0,
+            'total_discount' => $sales->sum('discount') ?? 0,
+            'total_tax' => $sales->sum('tax') ?? 0,
         ];
         
         $pdf = Pdf::loadView('admin.reports.pdf.daily-sales', compact('sales', 'date', 'summary'));
@@ -211,13 +213,21 @@ class ReportWebController extends Controller
     {
         $stocks = Stock::with('medicine')
             ->where('quantity', '>', 0)
-            ->where('expiry_date', '>', Carbon::now())
-            ->select('*', DB::raw('quantity * selling_price as stock_value'))
             ->get();
+
+        $totalPurchaseValue = $stocks->sum(function($stock) {
+            return $stock->quantity * $stock->purchase_price;
+        });
+        
+        $totalSellingValue = $stocks->sum(function($stock) {
+            return $stock->quantity * $stock->selling_price;
+        });
 
         $summary = [
             'total_items' => $stocks->sum('quantity'),
-            'total_value' => $stocks->sum('stock_value'),
+            'total_purchase_value' => $totalPurchaseValue,
+            'total_selling_value' => $totalSellingValue,
+            'potential_profit' => $totalSellingValue - $totalPurchaseValue,
         ];
         
         $pdf = Pdf::loadView('admin.reports.pdf.stock-value', compact('stocks', 'summary'));

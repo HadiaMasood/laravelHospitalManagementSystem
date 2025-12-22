@@ -7,7 +7,7 @@
 
     <div class="flex justify-between items-center mb-6">
         <div>
-            <h1 class="text-3xl font-bold text-gray-800">📅 Daily Sales Report</h1>
+            <h1 class="text-3xl font-bold text-gray-800"> Daily Sales Report</h1>
             <p class="text-gray-600 mt-2">{{ \Carbon\Carbon::parse($summary['date'])->format('F d, Y') }}</p>
         </div>
         <div class="flex gap-2">
@@ -20,7 +20,7 @@
                 <input type="hidden" name="type" value="daily-sales">
                 <input type="hidden" name="date" value="{{ $summary['date'] }}">
                 <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                    🖨️ Download PDF
+                     Download PDF
                 </button>
             </form>
         </div>

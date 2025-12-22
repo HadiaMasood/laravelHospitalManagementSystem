@@ -6,7 +6,7 @@
 <div class="container mx-auto px-4 py-8">
 
     <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-800">📧 Email Alerts</h1>
+        <h1 class="text-3xl font-bold text-gray-800"> Email Alerts</h1>
         <p class="text-gray-600 mt-2">Automated expiry notifications</p>
     </div>
 
@@ -32,9 +32,9 @@
                 <div class="flex items-center justify-between mb-4">
                     <div>
                         <h3 class="text-xl font-bold text-gray-800">
-                            @if($setting->alert_type == 'expiry') ⚠️ Expiring Stock Alerts
-                            @elseif($setting->alert_type == 'low_stock') 📦 Low Stock Alerts
-                            @else ❌ Expired Stock Alerts
+                            @if($setting->alert_type == 'expiry')  Expiring Stock Alerts
+                            @elseif($setting->alert_type == 'low_stock')  Low Stock Alerts
+                            @else Expired Stock Alerts
                             @endif
                         </h3>
                         <p class="text-gray-600 text-sm mt-1">
@@ -77,12 +77,12 @@
 
                 <div class="flex gap-2">
                     <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
-                        💾 Save Settings
+                        Save Settings
                     </button>
                     
                     <a href="{{ route('admin.email-alerts.test', $setting->alert_type) }}" 
                        class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">
-                        📧 Send Test Email
+                         Send Test Email
                     </a>
                 </div>
             </form>
