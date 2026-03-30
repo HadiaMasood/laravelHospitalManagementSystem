@@ -112,6 +112,17 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/sales/{sale}', [SalesController::class, 'show'])->name('sales.show');
 });
 
+Route::get('/clear-route-cache', function() {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('route:clear');
+        \Illuminate\Support\Facades\Artisan::call('config:clear');
+        \Illuminate\Support\Facades\Artisan::call('view:clear');
+        return "SUCCESS: Route, Config, and View cache cleared. Now login again.";
+    } catch (\Exception $e) {
+        return "ERROR: " . $e->getMessage();
+    }
+});
+
 /*
 |--------------------------------------------------------------------------
 | API Routes (Barcode Scan) - Removed, use api.php instead
