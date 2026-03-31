@@ -9,7 +9,7 @@
             <h1 class="text-3xl font-bold text-gray-800">🛒 Point of Sale (POS)</h1>
             <p class="text-gray-600 mt-1">Create a new sale</p>
         </div>
-        <a href="{{ route('sales.index') }}" class="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 font-semibold">
+        <a href="{{ route('admin.sales.index') }}" class="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 font-semibold">
             ← Back to Sales
         </a>
     </div>
@@ -20,7 +20,7 @@
     </div>
     @endif
 
-    <form action="{{ route('sales.store') }}" method="POST" id="salesForm">
+    <form action="{{ route('admin.sales.store') }}" method="POST" id="salesForm">
         @csrf
         
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">

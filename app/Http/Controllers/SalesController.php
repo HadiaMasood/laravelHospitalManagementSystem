@@ -105,7 +105,7 @@ class SalesController extends Controller
             DB::commit();
 
             return redirect()
-                ->route('sales.show', $sale->id)
+                ->route('admin.sales.show', $sale->id)
                 ->with('success', 'Sale completed successfully');
 
         } catch (\Exception $e) {

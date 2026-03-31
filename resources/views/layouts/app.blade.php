@@ -73,8 +73,9 @@
                         <a href="{{ route('admin.sales.index') }}" class="nav-link">Sales</a>
                         <a href="{{ route('admin.reports.index') }}" class="nav-link">Reports</a>
                     @elseif(auth()->user()->role === 'cashier')
-                        <a href="{{ route('sales.create') }}" class="nav-link">POS</a>
-                        <a href="{{ route('sales.index') }}" class="nav-link">My Sales</a>
+                        <a href="{{ route('cashier.dashboard') }}" class="nav-link">Dashboard</a>
+                        <a href="{{ route('admin.sales.create') }}" class="nav-link">POS</a>
+                        <a href="{{ route('admin.sales.index') }}" class="nav-link">My Sales</a>
                     @endif
                 </div>
             </div>
@@ -134,10 +135,13 @@
                     <i class="fas fa-chart-bar mr-2"></i>Reports
                 </a>
             @elseif(auth()->user()->role === 'cashier')
-                <a href="{{ route('sales.create') }}" class="nav-link">
+                <a href="{{ route('cashier.dashboard') }}" class="nav-link">
+                    <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+                </a>
+                <a href="{{ route('admin.sales.create') }}" class="nav-link">
                     <i class="fas fa-cash-register mr-2"></i>POS
                 </a>
-                <a href="{{ route('sales.index') }}" class="nav-link">
+                <a href="{{ route('admin.sales.index') }}" class="nav-link">
                     <i class="fas fa-receipt mr-2"></i>My Sales
                 </a>
             @endif

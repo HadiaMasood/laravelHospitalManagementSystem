@@ -23,7 +23,10 @@ class LoginController extends Controller
         if (Auth::attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
             
-            // Redirect to dashboard - role check happens in blade
+            // Redirect to dashboard based on role
+            if (\Illuminate\Support\Facades\Auth::user()->role === 'cashier') {
+                return redirect()->route('cashier.dashboard');
+            }
             return redirect()->route('admin.dashboard');
         }
 

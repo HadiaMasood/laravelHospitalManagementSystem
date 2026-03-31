@@ -29,7 +29,7 @@ class CashierAuthController extends Controller
                 return back()->withErrors(['email' => 'Only cashiers can login here.']);
             }
             $request->session()->regenerate();
-            return redirect()->route('sales.index');
+            return redirect()->route('cashier.dashboard');
         }
 
         return back()->withErrors(['email' => 'Invalid credentials.'])->onlyInput('email');
@@ -55,8 +55,7 @@ class CashierAuthController extends Controller
             'role' => 'cashier',
         ]);
 
-        Auth::login($user);
-        return redirect()->route('sales.index')->with('success', 'Cashier account created successfully!');
+        return redirect()->route('cashier.dashboard')->with('success', 'Cashier account created successfully!');
     }
 
     public function logout(Request $request)

@@ -9,7 +9,7 @@
             <h1 class="text-3xl font-bold text-gray-800"> My Sales</h1>
             <p class="text-gray-600 mt-1">View your sales transactions</p>
         </div>
-        <a href="{{ route('sales.create') }}" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 font-semibold shadow-md">
+        <a href="{{ route('admin.sales.create') }}" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 font-semibold shadow-md">
              New Sale
         </a>
     </div>
@@ -31,7 +31,7 @@
                  Filter
             </button>
             @if(request('from_date') || request('to_date'))
-            <a href="{{ route('sales.index') }}" class="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600">
+            <a href="{{ route('admin.sales.index') }}" class="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600">
                 Clear
             </a>
             @endif
@@ -72,7 +72,7 @@
                     </td>
                     <td class="px-6 py-4 text-sm text-gray-500">{{ $sale->created_at->format('M d, Y h:i A') }}</td>
                     <td class="px-6 py-4">
-                        <a href="{{ route('sales.show', $sale) }}" 
+                        <a href="{{ route('admin.sales.show', $sale) }}" 
                            class="text-blue-600 hover:text-blue-900 font-medium">View Details →</a>
                     </td>
                 </tr>
@@ -85,7 +85,7 @@
                             </svg>
                         </div>
                         <p class="text-gray-500 font-medium">No sales found</p>
-                        <a href="{{ route('sales.create') }}" class="text-blue-600 hover:underline mt-2 inline-block">
+                        <a href="{{ route('admin.sales.create') }}" class="text-blue-600 hover:underline mt-2 inline-block">
                             Create your first sale →
                         </a>
                     </td>

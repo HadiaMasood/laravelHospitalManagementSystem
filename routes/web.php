@@ -100,6 +100,15 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
 
 /*
 |--------------------------------------------------------------------------
+| Cashier Panel Routes (Protected)
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('cashier')->name('cashier.')->middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'cashierDashboard'])->name('dashboard');
+});
+/*
+|--------------------------------------------------------------------------
 | Sales (POS) Routes - Outside admin prefix
 |--------------------------------------------------------------------------
 */

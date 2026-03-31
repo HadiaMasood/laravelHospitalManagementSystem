@@ -38,7 +38,7 @@ class DashboardController extends Controller
         return view('admin.dashboard', compact('stats', 'recentSales'));
     }
 
-    private function cashierDashboard()
+    public function cashierDashboard()
     {
         // Get stock data for cashier (read-only) with pagination
         $stocks = Stock::with('medicine')

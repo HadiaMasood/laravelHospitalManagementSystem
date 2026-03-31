@@ -8,7 +8,7 @@
         
         <!-- Header Actions (Hidden on Print) -->
         <div class="flex justify-between items-center mb-6 no-print">
-            <a href="{{ route('sales.index') }}" class="flex items-center text-blue-600 hover:text-blue-800 font-medium">
+            <a href="{{ route('admin.sales.index') }}" class="flex items-center text-blue-600 hover:text-blue-800 font-medium">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                 </svg>
@@ -163,7 +163,7 @@
 
         <!-- Action Buttons (Hidden on Print) -->
         <div class="mt-6 flex justify-center gap-4 no-print">
-            <a href="{{ route('sales.index') }}" class="bg-gray-500 text-white px-8 py-3 rounded-lg hover:bg-gray-600 font-medium">
+            <a href="{{ route('admin.sales.index') }}" class="bg-gray-500 text-white px-8 py-3 rounded-lg hover:bg-gray-600 font-medium">
                 Close
             </a>
             <button onclick="window.print()" class="bg-green-600 text-white px-8 py-3 rounded-lg hover:bg-green-700 font-medium">
